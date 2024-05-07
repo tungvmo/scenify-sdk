@@ -66,6 +66,10 @@ class Editor extends EventManager {
     this.handlers.objectsHandler.deselect()
   }
 
+  public select = object => {
+    this.handlers.objectsHandler.select(object)
+  }
+
   // QUERY
   public findByName = (name: string) => {
     return this.handlers.objectsHandler.findByName(name)

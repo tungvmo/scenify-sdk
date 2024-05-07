@@ -5,6 +5,7 @@ import objectToFabric from '../utils/objectToFabric'
 import { angleToPoint } from '../utils/parser'
 import BaseHandler from './BaseHandler'
 import pick from 'lodash/pick'
+import { uuid } from '../utils/uuid'
 class ObjectHandler extends BaseHandler {
   private clipboard
   public isCut
@@ -16,6 +17,7 @@ class ObjectHandler extends BaseHandler {
     if (this.config.clipToFrame) {
       const frame = this.handlers.frameHandler.getFrame()
       object.clipPath = frame
+      object.id = uuid()
     }
     canvas.add(object)
     object.center()
@@ -81,6 +83,10 @@ class ObjectHandler extends BaseHandler {
   public deselect = () => {
     this.canvas.discardActiveObject()
     this.canvas.requestRenderAll()
+  }
+
+  public select = object => {
+    this.canvas.setActiveObject(object)
   }
 
   public moveVertical = value => {
@@ -575,6 +581,7 @@ class ObjectHandler extends BaseHandler {
     }
     const group = activeObject.toGroup()
     group.clipPath = frame
+    group.type = ObjectType.GROUP
     this.canvas.renderAll()
     this.handlers.historyHandler.save('group')
   }
@@ -592,8 +599,13 @@ class ObjectHandler extends BaseHandler {
     activeSelection._objects.forEach(object => {
       object.clipPath = frame
     })
+
+    delete activeSelection.clipPath
+    delete activeSelection.type
+
     this.canvas.renderAll()
     this.context.setActiveObject(activeSelection)
+
     this.handlers.historyHandler.save('ungroup')
   }
 
