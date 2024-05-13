@@ -63,6 +63,7 @@ class ObjectHandler extends BaseHandler {
           }
         }
         activeObject.set(property as keyof fabric.Object, options[property])
+        canvas.setActiveObject(activeObject)
         canvas.requestRenderAll()
       }
       this.handlers.historyHandler.save('object:updated')
@@ -197,8 +198,10 @@ class ObjectHandler extends BaseHandler {
     if (object) {
       const frame = this.handlers.frameHandler.getFrame()
       this.canvas.discardActiveObject()
+      object.id = uuid()
       this.duplicate(object, frame, duplicates => {
         const selection = new fabric.ActiveSelection(duplicates, { canvas: this.canvas })
+
         this.canvas.setActiveObject(selection)
         this.canvas.requestRenderAll()
       })

@@ -100,6 +100,7 @@ class ExportObject {
     const object = {
       ...baseOptions,
       metadata: {
+        ...item.metadata,
         src: item.src,
         cropX: item.cropX,
         cropY: item.cropY
@@ -113,6 +114,7 @@ class ExportObject {
     const { width, height, angle, keyValues, scaleX, scaleY } = item
     const baseOptions = this.getBaseOptions(item, options, inGroup)
     const metadata = {
+      ...item.metadata,
       originX: item.originX,
       originY: item.originY,
       angle,
@@ -139,6 +141,7 @@ class ExportObject {
     const object = {
       ...baseOptions,
       metadata: {
+        ...item.metadata,
         src: item.src
       }
     }
@@ -152,6 +155,7 @@ class ExportObject {
     const object = {
       ...baseOptions,
       metadata: {
+        ...item.metadata,
         value: item.path,
         fill: item.fill
       }
@@ -164,6 +168,7 @@ class ExportObject {
     const baseOptions = this.getBaseOptions(item, options, inGroup)
 
     const object = {
+      ...item.metadata,
       ...baseOptions,
       metadata: {
         fill: item.fill
