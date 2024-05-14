@@ -19,7 +19,7 @@ class FrameHandler extends BaseHandler {
       width: 1280,
       height: 720,
       id: 'frame',
-      name: 'Initial Frame',
+      name: '',
       fill: '#ffffff',
       hoverCursor: 'default',
       absolutePositioned: this.config.clipToFrame
@@ -29,7 +29,7 @@ class FrameHandler extends BaseHandler {
       height: 720,
       fill: '#ffffff',
       id: 'background',
-      name: 'Initial Frame'
+      name: ''
     })
     this.canvas.add(frame)
     this.canvas.add(background)
@@ -63,9 +63,11 @@ class FrameHandler extends BaseHandler {
 
   update = options => {
     const frame = this.getFrame()
-    const { width, height } = options
-    frame.set('width', width)
-    frame.set('height', height)
+
+    for (const key in options) {
+      frame.set(key as any, options[key])
+    }
+
     frame.center()
     this.handlers.zoomHandler.zoomToFit()
   }

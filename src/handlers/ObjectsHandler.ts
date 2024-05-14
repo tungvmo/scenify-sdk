@@ -64,6 +64,7 @@ class ObjectHandler extends BaseHandler {
         }
         activeObject.set(property as keyof fabric.Object, options[property])
         canvas.setActiveObject(activeObject)
+
         canvas.requestRenderAll()
       }
       this.handlers.historyHandler.save('object:updated')
@@ -88,6 +89,7 @@ class ObjectHandler extends BaseHandler {
 
   public select = object => {
     this.canvas.setActiveObject(object)
+    this.canvas.requestRenderAll()
   }
 
   public moveVertical = value => {

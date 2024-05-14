@@ -218,8 +218,7 @@ class ObjectToFabric {
         const element = new fabric.Background({
           ...baseOptions,
           fill: fill ? fill : '#000000',
-          id: 'background',
-          name: ''
+          id: 'background'
         })
 
         const { top, left } = element

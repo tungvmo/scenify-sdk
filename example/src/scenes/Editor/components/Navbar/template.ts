@@ -3,7 +3,7 @@ export const template = {
   objects: [
     {
       id: 'background',
-      name: 'Initial Frame',
+      name: '',
       angle: 0,
       stroke: null,
       strokeWidth: 0,
