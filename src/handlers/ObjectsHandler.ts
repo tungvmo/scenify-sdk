@@ -587,6 +587,7 @@ class ObjectHandler extends BaseHandler {
     const group = activeObject.toGroup()
     group.clipPath = frame
     group.type = ObjectType.GROUP
+    group.id = uuid()
     this.canvas.renderAll()
     this.handlers.historyHandler.save('group')
   }
