@@ -608,6 +608,7 @@ class ObjectHandler extends BaseHandler {
 
     delete activeSelection.clipPath
     delete activeSelection.type
+    delete activeSelection.id
 
     this.canvas.renderAll()
     this.context.setActiveObject(activeSelection)
