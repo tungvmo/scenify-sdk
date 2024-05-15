@@ -19,6 +19,10 @@ class ObjectHandler extends BaseHandler {
       object.clipPath = frame
       object.id = uuid()
     }
+
+    if (item.type) {
+      object.type = item.type
+    }
     canvas.add(object)
     object.center()
     canvas.setActiveObject(object)
@@ -26,9 +30,25 @@ class ObjectHandler extends BaseHandler {
     this.handlers.historyHandler.save('object:created')
   }
 
-  public update = options => {
-    const activeObject = this.canvas.getActiveObject()
+  public update = async options => {
+    const activeObject: any = this.canvas.getActiveObject()
     const canvas = this.canvas
+
+    const checkNestedObject = (objects, property) => {
+      objects.forEach(object => {
+        if (property === 'metadata') {
+          object.set('metadata', { ...object.metadata, ...options['metadata'] })
+        } else {
+          object.set(property, options[property])
+        }
+        object.setCoords()
+
+        if (object._objects) {
+          checkNestedObject(object._objects, property)
+        }
+      })
+    }
+
     if (activeObject) {
       for (const property in options) {
         if (property === 'angle' || property === 'top' || property === 'left') {
@@ -43,14 +63,7 @@ class ObjectHandler extends BaseHandler {
           // @ts-ignore
           if (activeObject._objects) {
             // @ts-ignore
-            activeObject._objects.forEach(object => {
-              if (property === 'metadata') {
-                object.set('metadata', { ...object.metadata, ...options['metadata'] })
-              } else {
-                object.set(property, options[property])
-              }
-              object.setCoords()
-            })
+            checkNestedObject(activeObject._objects, property)
           } else {
             if (property === 'metadata') {
               // @ts-ignore
@@ -63,10 +76,11 @@ class ObjectHandler extends BaseHandler {
           }
         }
         activeObject.set(property as keyof fabric.Object, options[property])
-        canvas.setActiveObject(activeObject)
-
-        canvas.requestRenderAll()
       }
+
+      canvas.setActiveObject(activeObject)
+
+      canvas.requestRenderAll()
       this.handlers.historyHandler.save('object:updated')
     }
   }
@@ -201,12 +215,17 @@ class ObjectHandler extends BaseHandler {
       const frame = this.handlers.frameHandler.getFrame()
       this.canvas.discardActiveObject()
       object.id = uuid()
-      this.duplicate(object, frame, duplicates => {
-        const selection = new fabric.ActiveSelection(duplicates, { canvas: this.canvas })
 
-        this.canvas.setActiveObject(selection)
-        this.canvas.requestRenderAll()
-      })
+      if (object.type === ObjectType.STATIC_VECTOR) {
+        this.add(object)
+      } else {
+        this.duplicate(object, frame, duplicates => {
+          const selection = new fabric.ActiveSelection(duplicates, { canvas: this.canvas })
+
+          this.canvas.setActiveObject(selection)
+          this.canvas.requestRenderAll()
+        })
+      }
     }
   }
 
