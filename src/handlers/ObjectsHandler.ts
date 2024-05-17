@@ -10,10 +10,14 @@ class ObjectHandler extends BaseHandler {
   private clipboard
   public isCut
   private copyStyleClipboard
-  public add = async item => {
+  public add = async (item, isCopy = false) => {
     const { canvas } = this
     const options = this.handlers.frameHandler.getOptions()
-    const object: fabric.Object = await objectToFabric.run(item, options)
+    const object: fabric.Object = await objectToFabric.run(
+      item,
+      options,
+      item.type === ObjectType.STATIC_VECTOR
+    )
     if (this.config.clipToFrame) {
       const frame = this.handlers.frameHandler.getFrame()
       object.clipPath = frame
@@ -23,8 +27,11 @@ class ObjectHandler extends BaseHandler {
     if (item.type) {
       object.type = item.type
     }
+
     canvas.add(object)
-    object.center()
+    if (!isCopy) {
+      object.center()
+    }
     canvas.setActiveObject(object)
     this.context.setActiveObject(object)
     this.handlers.historyHandler.save('object:created')
@@ -179,12 +186,23 @@ class ObjectHandler extends BaseHandler {
       const objects: fabric.Object[] = (object as fabric.Group).getObjects()
       const duplicates: fabric.Object[] = []
       for (let i = 0; i < objects.length; i++) {
-        this.duplicate(objects[i], frame, clones => {
-          duplicates.push(...clones)
-          if (i == objects.length - 1) {
-            callback(duplicates)
-          }
-        })
+        if (objects[i].type === ObjectType.STATIC_VECTOR) {
+          this.add(
+            {
+              ...objects[i],
+              top: objects[i].top! + 10,
+              left: objects[i].left! + 10
+            },
+            true
+          )
+        } else {
+          this.duplicate(objects[i], frame, clones => {
+            duplicates.push(...clones)
+            if (i == objects.length - 1) {
+              callback(duplicates)
+            }
+          })
+        }
       }
     } else {
       object.clone(
@@ -217,7 +235,7 @@ class ObjectHandler extends BaseHandler {
       object.id = uuid()
 
       if (object.type === ObjectType.STATIC_VECTOR) {
-        this.add(object)
+        this.add({ ...object, top: object.top! + 10, left: object.left! + 10 }, true)
       } else {
         this.duplicate(object, frame, duplicates => {
           const selection = new fabric.ActiveSelection(duplicates, { canvas: this.canvas })
