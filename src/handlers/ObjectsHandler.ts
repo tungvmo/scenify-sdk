@@ -182,27 +182,16 @@ class ObjectHandler extends BaseHandler {
     frame: fabric.Object,
     callback: (clones: fabric.Object[]) => void
   ): void {
-    if (object instanceof fabric.Group) {
+    if (object instanceof fabric.Group && object.type !== ObjectType.STATIC_VECTOR) {
       const objects: fabric.Object[] = (object as fabric.Group).getObjects()
       const duplicates: fabric.Object[] = []
       for (let i = 0; i < objects.length; i++) {
-        if (objects[i].type === ObjectType.STATIC_VECTOR) {
-          this.add(
-            {
-              ...objects[i],
-              top: objects[i].top! + 10,
-              left: objects[i].left! + 10
-            },
-            true
-          )
-        } else {
-          this.duplicate(objects[i], frame, clones => {
-            duplicates.push(...clones)
-            if (i == objects.length - 1) {
-              callback(duplicates)
-            }
-          })
-        }
+        this.duplicate(objects[i], frame, clones => {
+          duplicates.push(...clones)
+          if (i == objects.length - 1) {
+            callback(duplicates)
+          }
+        })
       }
     } else {
       object.clone(
@@ -234,16 +223,23 @@ class ObjectHandler extends BaseHandler {
       this.canvas.discardActiveObject()
       object.id = uuid()
 
-      if (object.type === ObjectType.STATIC_VECTOR) {
-        this.add({ ...object, top: object.top! + 10, left: object.left! + 10 }, true)
-      } else {
-        this.duplicate(object, frame, duplicates => {
-          const selection = new fabric.ActiveSelection(duplicates, { canvas: this.canvas })
+      this.duplicate(object, frame, duplicates => {
+        const selection = new fabric.ActiveSelection(duplicates, { canvas: this.canvas })
 
-          this.canvas.setActiveObject(selection)
-          this.canvas.requestRenderAll()
-        })
-      }
+        this.canvas.setActiveObject(selection)
+        this.canvas.requestRenderAll()
+      })
+
+      // if (object.type === ObjectType.STATIC_VECTOR) {
+      //   this.add({ ...object, top: object.top! + 10, left: object.left! + 10 }, true)
+      // } else {
+      //   this.duplicate(object, frame, duplicates => {
+      //     const selection = new fabric.ActiveSelection(duplicates, { canvas: this.canvas })
+
+      //     this.canvas.setActiveObject(selection)
+      //     this.canvas.requestRenderAll()
+      //   })
+      // }
     }
   }
 
