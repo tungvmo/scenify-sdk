@@ -41,17 +41,16 @@ class ObjectHandler extends BaseHandler {
     const activeObject: any = this.canvas.getActiveObject()
     const canvas = this.canvas
 
-    const checkNestedObject = (objects, property) => {
-      objects.forEach(object => {
-        if (property === 'metadata') {
-          object.set('metadata', { ...object.metadata, ...options['metadata'] })
-        } else {
-          object.set(property, options[property])
+    const fillColorObject = (object, property) => {
+      ;(object?._objects || []).forEach(object => {
+        if (property?.metadata?.fill || property.fill) {
+          object.fill = property?.metadata?.fill || property.fill
         }
-        object.setCoords()
-
+        if (property?.metadata?.stroke || property.stroke) {
+          object.stroke = property?.metadata?.stroke || property.stroke
+        }
         if (object._objects) {
-          checkNestedObject(object._objects, property)
+          fillColorObject(object, property)
         }
       })
     }
@@ -68,9 +67,16 @@ class ObjectHandler extends BaseHandler {
           }
         } else {
           // @ts-ignore
-          if (activeObject._objects) {
+          if (activeObject._objects && activeObject.type !== ObjectType.STATIC_VECTOR) {
             // @ts-ignore
-            checkNestedObject(activeObject._objects, property)
+            activeObject._objects.forEach(object => {
+              if (property === 'metadata') {
+                object.set('metadata', { ...object.metadata, ...options['metadata'] })
+              } else {
+                object.set(property, options[property])
+              }
+              object.setCoords()
+            })
           } else {
             if (property === 'metadata') {
               // @ts-ignore
@@ -79,6 +85,7 @@ class ObjectHandler extends BaseHandler {
               // @ts-ignore
               activeObject.set(property, options[property])
             }
+            fillColorObject(activeObject, options)
             activeObject.setCoords()
           }
         }
@@ -182,6 +189,21 @@ class ObjectHandler extends BaseHandler {
     frame: fabric.Object,
     callback: (clones: fabric.Object[]) => void
   ): void {
+    const setColorNestedObjects = (item: fabric.Object | any) => {
+      ;((item as any)?._objects || []).forEach((object: any) => {
+        if (item?.metadata?.fill || item.fill) {
+          object.fill = item?.metadata?.fill || item.fill
+        }
+        if (item?.metadata?.stroke || item.stroke) {
+          object.stroke = item?.metadata?.stroke || item.stroke
+        }
+
+        if (object) {
+          setColorNestedObjects(object)
+        }
+      })
+    }
+
     if (object instanceof fabric.Group && object.type !== ObjectType.STATIC_VECTOR) {
       const objects: fabric.Object[] = (object as fabric.Group).getObjects()
       const duplicates: fabric.Object[] = []
@@ -195,7 +217,7 @@ class ObjectHandler extends BaseHandler {
       }
     } else {
       object.clone(
-        (clone: fabric.Object) => {
+        (clone: fabric.Object | any) => {
           clone.clipPath = null
           clone.set({
             left: object.left! + 10,
@@ -207,11 +229,13 @@ class ObjectHandler extends BaseHandler {
             clone.clipPath = frame
           }
 
+          setColorNestedObjects(clone)
+
           this.canvas.add(clone)
 
           callback([clone])
         },
-        ['keyValues', 'src']
+        ['keyValues', 'src', 'metadata']
       )
     }
   }
@@ -229,17 +253,6 @@ class ObjectHandler extends BaseHandler {
         this.canvas.setActiveObject(selection)
         this.canvas.requestRenderAll()
       })
-
-      // if (object.type === ObjectType.STATIC_VECTOR) {
-      //   this.add({ ...object, top: object.top! + 10, left: object.left! + 10 }, true)
-      // } else {
-      //   this.duplicate(object, frame, duplicates => {
-      //     const selection = new fabric.ActiveSelection(duplicates, { canvas: this.canvas })
-
-      //     this.canvas.setActiveObject(selection)
-      //     this.canvas.requestRenderAll()
-      //   })
-      // }
     }
   }
 
