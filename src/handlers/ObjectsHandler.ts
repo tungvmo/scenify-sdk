@@ -10,7 +10,7 @@ class ObjectHandler extends BaseHandler {
   private clipboard
   public isCut
   private copyStyleClipboard
-  public add = async (item, isCopy = false) => {
+  public add = async item => {
     const { canvas } = this
     const options = this.handlers.frameHandler.getOptions()
     const object: fabric.Object = await objectToFabric.run(
@@ -29,8 +29,11 @@ class ObjectHandler extends BaseHandler {
     }
 
     canvas.add(object)
-    if (!isCopy) {
+    if (!(item.top && item.left)) {
       object.center()
+    } else {
+      object.top = item.top
+      object.left = item.left
     }
     canvas.setActiveObject(object)
     this.context.setActiveObject(object)
@@ -89,7 +92,7 @@ class ObjectHandler extends BaseHandler {
             activeObject.setCoords()
           }
         }
-        activeObject.set(property as keyof fabric.Object, options[property])
+        // activeObject.set(property as keyof fabric.Object, options[property])
       }
 
       canvas.setActiveObject(activeObject)

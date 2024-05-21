@@ -240,7 +240,6 @@ class ObjectToFabric {
   [ObjectType.STATIC_VECTOR](item, options, inGroup) {
     return new Promise(async (resolve, reject) => {
       try {
-        console.log('22222')
         const baseOptions = this.getBaseOptions(item, options, inGroup)
         const src = item.metadata.src
         fabric.loadSVGFromURL(src, (objects, opts) => {
@@ -251,6 +250,7 @@ class ObjectToFabric {
             baseOptions.top = options.top
             baseOptions.left = options.left
           }
+
           objects.forEach(object => {
             baseOptions?.fill && object.set('fill', baseOptions?.fill)
             baseOptions?.stroke && object.set('stroke', baseOptions?.stroke)
