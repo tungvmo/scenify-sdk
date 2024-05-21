@@ -21,11 +21,24 @@ class ObjectHandler extends BaseHandler {
     if (this.config.clipToFrame) {
       const frame = this.handlers.frameHandler.getFrame()
       object.clipPath = frame
+    }
+
+    if (!item.id) {
       object.id = uuid()
     }
 
     if (item.type) {
       object.type = item.type
+    }
+
+    if (item.id === 'Template') {
+      object.hasControls = false
+      object.lockMovementY = true
+      object.lockMovementX = true
+      object.locked = true
+      object.hoverCursor = 'Default'
+      object.selectable = false
+      object.evented = false
     }
 
     canvas.add(object)
