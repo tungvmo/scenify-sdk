@@ -42,12 +42,20 @@ class ObjectHandler extends BaseHandler {
     }
 
     canvas.add(object)
+
     if (!(item.top && item.left)) {
       object.center()
     } else {
       object.top = item.top
       object.left = item.left
     }
+
+    if (item.width) {
+      object.scaleToWidth(item.width)
+    } else if (item.height) {
+      object.scaleToHeight(item.height)
+    }
+
     canvas.setActiveObject(object)
     this.context.setActiveObject(object)
     this.handlers.historyHandler.save('object:created')
