@@ -50,9 +50,9 @@ class ObjectHandler extends BaseHandler {
       object.left = item.left
     }
 
-    if (item.width) {
+    if (item.width && item.id !== 'Template') {
       object.scaleToWidth(item.width)
-    } else if (item.height) {
+    } else if (item.height && item.id !== 'Template') {
       object.scaleToHeight(item.height)
     }
 
