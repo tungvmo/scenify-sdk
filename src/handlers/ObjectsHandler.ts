@@ -58,8 +58,10 @@ class ObjectHandler extends BaseHandler {
       }
     }
 
-    canvas.setActiveObject(object)
-    this.context.setActiveObject(object)
+    if (item?.id !== 'Template') {
+      canvas.setActiveObject(object)
+      this.context.setActiveObject(object)
+    }
     this.handlers.historyHandler.save('object:created')
   }
 
