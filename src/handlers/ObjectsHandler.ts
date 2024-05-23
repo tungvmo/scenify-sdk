@@ -50,10 +50,12 @@ class ObjectHandler extends BaseHandler {
       object.left = item.left
     }
 
-    if (item.width && item.id !== 'Template') {
-      object.scaleToWidth(item.width)
-    } else if (item.height && item.id !== 'Template') {
-      object.scaleToHeight(item.height)
+    if ((item?.width || item?.height) && (!item?.width || !item?.height)) {
+      if (item?.width) {
+        object.scaleToWidth(item.width)
+      } else {
+        object.scaleToHeight(item.height)
+      }
     }
 
     canvas.setActiveObject(object)
