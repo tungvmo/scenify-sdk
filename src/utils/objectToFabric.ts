@@ -243,34 +243,29 @@ class ObjectToFabric {
         const baseOptions = this.getBaseOptions(item, options, inGroup)
         const src = item.metadata.src + '?no-cors'
 
-        fabric.loadSVGFromURL(
-          src,
-          (objects, opts) => {
-            const { width, height, top, left } = baseOptions
-            if (!width || !height) {
-              baseOptions.width = opts.width
-              baseOptions.height = opts.height
-              baseOptions.top = options.top
-              baseOptions.left = options.left
-            }
+        fabric.loadSVGFromURL(src, (objects, opts) => {
+          const { width, height, top, left } = baseOptions
+          if (!width || !height) {
+            baseOptions.width = opts.width
+            baseOptions.height = opts.height
+            baseOptions.top = options.top
+            baseOptions.left = options.left
+          }
 
-            objects.forEach(object => {
-              baseOptions?.fill && object.set('fill', baseOptions?.fill)
-              baseOptions?.stroke && object.set('stroke', baseOptions?.stroke)
+          objects.forEach(object => {
+            baseOptions?.fill && object.set('fill', baseOptions?.fill)
+            baseOptions?.stroke && object.set('stroke', baseOptions?.stroke)
+          })
+          const object = new fabric.StaticVector(objects, opts, { ...baseOptions, src })
+          if (isNaN(top) || isNaN(left)) {
+            object.set({
+              top: options.top,
+              left: options.left
             })
-            const object = new fabric.StaticVector(objects, opts, { ...baseOptions, src })
-            if (isNaN(top) || isNaN(left)) {
-              object.set({
-                top: options.top,
-                left: options.left
-              })
-              object.scaleToWidth(320)
-            }
-            resolve(object)
-          },
-          null,
-          { crossOrigin: 'Anonymous' }
-        )
+            object.scaleToWidth(320)
+          }
+          resolve(object)
+        })
       } catch (err) {
         reject(err)
       }
