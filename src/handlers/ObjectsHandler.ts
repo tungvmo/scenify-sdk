@@ -143,6 +143,7 @@ class ObjectHandler extends BaseHandler {
 
   public select = object => {
     this.canvas.setActiveObject(object)
+    this.context.setActiveObject(object)
     this.canvas.requestRenderAll()
   }
 
@@ -205,6 +206,7 @@ class ObjectHandler extends BaseHandler {
       this.duplicate(activeObject, frame, duplicates => {
         const selection = new fabric.ActiveSelection(duplicates, { canvas: this.canvas })
         this.canvas.setActiveObject(selection)
+        this.context.setActiveObject(selection)
         this.canvas.requestRenderAll()
       })
     }
@@ -277,6 +279,8 @@ class ObjectHandler extends BaseHandler {
         const selection = new fabric.ActiveSelection(duplicates, { canvas: this.canvas })
 
         this.canvas.setActiveObject(selection)
+        this.context.setActiveObject(selection)
+
         this.canvas.requestRenderAll()
       })
     }
@@ -429,6 +433,7 @@ class ObjectHandler extends BaseHandler {
         })
         const selection = new fabric.ActiveSelection(selectedObjects, { canvas: this.canvas })
         this.canvas.setActiveObject(selection)
+        this.context.setActiveObject(selection)
       } else {
         const currentObject = activeObject
         currentObject.set('top', frame.top)
@@ -456,6 +461,7 @@ class ObjectHandler extends BaseHandler {
         })
         const selection = new fabric.ActiveSelection(selectedObjects, { canvas: this.canvas })
         this.canvas.setActiveObject(selection)
+        this.context.setActiveObject(selection)
       } else {
         const currentObject = activeObject
         const currentObjectHeight = currentObject.getScaledHeight()
@@ -484,6 +490,7 @@ class ObjectHandler extends BaseHandler {
         })
         const selection = new fabric.ActiveSelection(selectedObjects, { canvas: this.canvas })
         this.canvas.setActiveObject(selection)
+        this.context.setActiveObject(selection)
       } else {
         const currentObject = activeObject
         const currentObjectHeight = currentObject.getScaledHeight()
@@ -510,6 +517,7 @@ class ObjectHandler extends BaseHandler {
         })
         const selection = new fabric.ActiveSelection(selectedObjects, { canvas: this.canvas })
         this.canvas.setActiveObject(selection)
+        this.context.setActiveObject(selection)
       } else {
         const currentObject = activeObject
         currentObject.set('left', frame.left)
@@ -536,8 +544,10 @@ class ObjectHandler extends BaseHandler {
           const currentObjectWidth = currentObject.getScaledWidth()
           currentObject.set('left', refLeft + refWidth / 2 - currentObjectWidth / 2)
         })
+
         const selection = new fabric.ActiveSelection(selectedObjects, { canvas: this.canvas })
         this.canvas.setActiveObject(selection)
+        this.context.setActiveObject(selection)
       } else {
         const currentObject = activeObject
         const currentObjectWidth = currentObject.getScaledWidth()
@@ -567,6 +577,7 @@ class ObjectHandler extends BaseHandler {
         })
         const selection = new fabric.ActiveSelection(selectedObjects, { canvas: this.canvas })
         this.canvas.setActiveObject(selection)
+        this.context.setActiveObject(selection)
       } else {
         const currentObject = activeObject
         const currentObjectWidth = currentObject.getScaledWidth()
