@@ -292,7 +292,14 @@ class ObjectToFabric {
       skewY,
       originX,
       originY,
-      animation
+      animation,
+      hasControls,
+      lockMovementY,
+      lockMovementX,
+      locked,
+      hoverCursor,
+      selectable,
+      evented,
     } = item
     let metadata = item.metadata ? item.metadata : {}
     const { fill } = metadata
@@ -317,7 +324,14 @@ class ObjectToFabric {
       skewX: skewX ? skewX : 0,
       skewY: skewY ? skewY : 0,
       metadata: metadata,
-      animation
+      animation,
+      hasControls,
+      lockMovementY,
+      lockMovementX,
+      locked,
+      hoverCursor,
+      selectable,
+      evented,
     }
     return baseOptions
   }

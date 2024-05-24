@@ -228,7 +228,14 @@ class ObjectToFabric {
       animation,
       originX,
       originY,
-      angle
+      angle,
+      hasControls,
+      lockMovementY,
+      lockMovementX,
+      locked,
+      hoverCursor,
+      selectable,
+      evented,
     } = item
     let metadata = item.metadata ? item.metadata : {}
     const { fill } = metadata
@@ -251,7 +258,14 @@ class ObjectToFabric {
       metadata: metadata,
       stroke,
       strokeWidth,
-      animation
+      animation,
+      hasControls,
+      lockMovementY,
+      lockMovementX,
+      locked,
+      hoverCursor,
+      selectable,
+      evented,
     }
     return baseOptions
   }
