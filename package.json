@@ -1,5 +1,5 @@
 {
-  "version": "0.3.3",
+  "version": "0.3.5",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -36,7 +36,10 @@
   "name": "@scenify/sdk",
   "author": "Dany Boza <db@backium.co>",
   "homepage": "https://github.com/scenify/scenify-sdk",
-  "repository": "https://github.com/scenify/scenify-sdk",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scenify/scenify-sdk.git"
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -71,5 +74,18 @@
     "gsap": "^3.8.0",
     "lodash": "^4.17.21",
     "resize-observer-polyfill": "^1.5.1"
-  }
+  },
+  "description": "_Warning: this project is not production ready, API might change without notice._",
+  "bugs": {
+    "url": "https://github.com/scenify/scenify-sdk/issues"
+  },
+  "directories": {
+    "doc": "docs",
+    "example": "example"
+  },
+  "keywords": [
+    "fabricjs",
+    "editor",
+    "sdk"
+  ]
 }
