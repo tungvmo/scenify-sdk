@@ -229,13 +229,13 @@ class ObjectToFabric {
       originX,
       originY,
       angle,
-      hasControls,
-      lockMovementY,
-      lockMovementX,
-      locked,
+      hasControls = true,
+      lockMovementY = false,
+      lockMovementX = false,
+      locked = false,
       hoverCursor,
-      selectable,
-      evented,
+      selectable = true,
+      evented = true,
     } = item
     let metadata = item.metadata ? item.metadata : {}
     const { fill } = metadata
