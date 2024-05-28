@@ -241,7 +241,7 @@ class ObjectToFabric {
     return new Promise(async (resolve, reject) => {
       try {
         const baseOptions = this.getBaseOptions(item, options, inGroup)
-        const src = item.metadata.src + '?no-cors'
+        const src = item.metadata.src
 
         fabric.loadSVGFromURL(src, (objects, opts) => {
           const { width, height, top, left } = baseOptions
@@ -299,7 +299,7 @@ class ObjectToFabric {
       locked = false,
       hoverCursor,
       selectable = true,
-      evented = true,
+      evented = true
     } = item
     let metadata = item.metadata ? item.metadata : {}
     const { fill } = metadata
@@ -331,7 +331,7 @@ class ObjectToFabric {
       locked,
       hoverCursor,
       selectable,
-      evented,
+      evented
     }
     return baseOptions
   }
