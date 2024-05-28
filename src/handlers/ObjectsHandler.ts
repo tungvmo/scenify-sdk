@@ -103,6 +103,7 @@ class ObjectHandler extends BaseHandler {
               } else {
                 object.set(property, options[property])
               }
+              fillColorObject(object, options)
               object.setCoords()
             })
           } else {
