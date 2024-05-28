@@ -13,3 +13,17 @@ export function angleToPoint(angle: number, sx: number, sy: number) {
   if (pp <= c) return { x: sx, y: pp - b }
   return { y: sy, x: sx - (pp - c) }
 }
+
+export function sortByLeft(objects) {
+  objects.sort(function(a, b) {
+    return a.left - b.left
+  })
+  return objects
+}
+
+export function sortByTop(objects) {
+  objects.sort(function(a, b) {
+    return a.top - b.top
+  })
+  return objects
+}

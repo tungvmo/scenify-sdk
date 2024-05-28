@@ -2,7 +2,7 @@ import { fabric } from 'fabric'
 import { copyStyleProps, getCopyStyleCursor, ObjectType } from '../common/constants'
 import { GradientOptions, ShadowOptions } from '../common/interfaces'
 import objectToFabric from '../utils/objectToFabric'
-import { angleToPoint } from '../utils/parser'
+import { angleToPoint, sortByLeft, sortByTop } from '../utils/parser'
 import BaseHandler from './BaseHandler'
 import pick from 'lodash/pick'
 import { uuid } from '../utils/uuid'
@@ -588,6 +588,75 @@ class ObjectHandler extends BaseHandler {
       }
       this.canvas.requestRenderAll()
     }
+  }
+
+  public distributesX = () => {
+    var activeObject: any = this.canvas.getActiveObject()
+
+    var totalWidth = activeObject.width
+    var totalBoxesWidth = 0
+    ;(activeObject?._objects || []).forEach(function(item) {
+      totalBoxesWidth += item.getScaledWidth()
+    })
+
+    var objects = sortByLeft(activeObject?._objects || [])
+    const objectSelected = [...objects]
+
+    this.canvas.renderAll()
+
+    let spacing = (totalWidth - totalBoxesWidth) / (objects.length - 1)
+    var previousObject = objects.shift()
+    objects.pop()
+
+    this.canvas.discardActiveObject()
+    objects.forEach(function(object) {
+      object.set({
+        left: previousObject.left + previousObject.width * previousObject.scaleX + spacing
+      })
+      object.setCoords()
+      previousObject = object
+    })
+
+    const selection = new fabric.ActiveSelection(objectSelected, { canvas: this.canvas })
+    this.canvas.setActiveObject(selection)
+    this.context.setActiveObject(selection)
+
+    this.canvas.requestRenderAll()
+  }
+
+  public distributesY = () => {
+    var activeObject: any = this.canvas.getActiveObject()
+
+    var totalHeight = activeObject.height
+    var totalBoxesHeight = 0
+    ;(activeObject?._objects || []).forEach(function(item) {
+      totalBoxesHeight += item.getScaledHeight()
+    })
+
+    var objects = sortByTop(activeObject?._objects || [])
+    const objectSelected = [...objects]
+
+    this.canvas.renderAll()
+
+    let spacing = (totalHeight - totalBoxesHeight) / (objects.length - 1)
+    var previousObject = objects.shift()
+    objects.pop()
+
+    this.canvas.discardActiveObject()
+
+    objects.forEach(function(object) {
+      object.set({
+        top: previousObject.top + previousObject.height * previousObject.scaleY + spacing
+      })
+      object.setCoords()
+      previousObject = object
+    })
+
+    const selection = new fabric.ActiveSelection(objectSelected, { canvas: this.canvas })
+    this.canvas.setActiveObject(selection)
+    this.context.setActiveObject(selection)
+
+    this.canvas.requestRenderAll()
   }
 
   /**

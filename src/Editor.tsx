@@ -132,6 +132,14 @@ class Editor extends EventManager {
     this.handlers.objectsHandler.alignRight()
   }
 
+  public distributesX = () => {
+    this.handlers.objectsHandler.distributesX()
+  }
+
+  public distributesY = () => {
+    this.handlers.objectsHandler.distributesY()
+  }
+
   //LAYERS
   public bringForward = () => {
     this.handlers.objectsHandler.bringForward()
