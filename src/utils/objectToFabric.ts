@@ -162,7 +162,14 @@ class ObjectToFabric {
             left: options.left
           })
           element.scaleToWidth(480)
+        } else if ((item?.width || item?.height) && (!item?.width || !item?.height)) {
+          if (item?.width) {
+            element.scaleToWidth(item.width)
+          } else {
+            element.scaleToHeight(item.height)
+          }
         }
+
         resolve(element)
       } catch (err) {
         reject(err)
@@ -257,13 +264,21 @@ class ObjectToFabric {
             baseOptions?.stroke && object.set('stroke', baseOptions?.stroke)
           })
           const object = new fabric.StaticVector(objects, opts, { ...baseOptions, src })
+
           if (isNaN(top) || isNaN(left)) {
             object.set({
               top: options.top,
               left: options.left
             })
             object.scaleToWidth(320)
+          } else if ((item?.width || item?.height) && (!item?.width || !item?.height)) {
+            if (item?.width) {
+              object.scaleToWidth(item.width)
+            } else {
+              object.scaleToHeight(item.height)
+            }
           }
+
           resolve(object)
         })
       } catch (err) {
