@@ -57,7 +57,7 @@ class ObjectHandler extends BaseHandler {
     this.handlers.historyHandler.save('object:created')
   }
 
-  public update = async options => {
+  public update = async (options, objectId = '') => {
     const activeObject: any = this.canvas.getActiveObject()
     const canvas = this.canvas
 
@@ -90,6 +90,7 @@ class ObjectHandler extends BaseHandler {
           if (activeObject._objects && activeObject.type !== ObjectType.STATIC_VECTOR) {
             // @ts-ignore
             activeObject._objects.forEach(object => {
+              if (objectId && object.id !== objectId) return
               if (property === 'metadata') {
                 object.set('metadata', { ...object.metadata, ...options['metadata'] })
               } else {

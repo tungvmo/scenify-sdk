@@ -30,8 +30,8 @@ class Editor extends EventManager {
     this.handlers.objectsHandler.add(options)
   }
   // Update selected object properties
-  public update = (options: any) => {
-    this.handlers.objectsHandler.update(options)
+  public update = (options: any, objectId?: any) => {
+    this.handlers.objectsHandler.update(options, objectId)
   }
 
   public copy = () => {
