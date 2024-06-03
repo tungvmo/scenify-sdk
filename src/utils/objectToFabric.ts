@@ -259,9 +259,15 @@ class ObjectToFabric {
             baseOptions.left = options.left
           }
 
-          objects.forEach(object => {
+          objects.forEach((object: any) => {
             baseOptions?.fill && object.set('fill', baseOptions?.fill)
             baseOptions?.stroke && object.set('stroke', baseOptions?.stroke)
+
+            if (object.type === 'text' && item?.replaceTexts) {
+              Object.entries(item?.replaceTexts || {}).forEach(([key, value]) => {
+                object.text = object.text.replaceAll(`${key}`, value)
+              })
+            }
           })
           const object = new fabric.StaticVector(objects, opts, { ...baseOptions, src })
 

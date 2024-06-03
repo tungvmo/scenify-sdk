@@ -50,7 +50,7 @@ class ObjectHandler extends BaseHandler {
       object.left = item.left
     }
 
-    if (item?.id !== 'Template') {
+    if (item?.id !== 'Template' && !item?.metadata?.isChild) {
       canvas.setActiveObject(object)
       this.context.setActiveObject(object)
     }
