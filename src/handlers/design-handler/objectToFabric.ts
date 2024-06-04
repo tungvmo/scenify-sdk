@@ -185,7 +185,6 @@ class ObjectToFabric {
   [ObjectType.STATIC_VECTOR](item: any) {
     return new Promise(async (resolve, reject) => {
       try {
-        console.log('load element')
         const baseOptions = this.getBaseOptions(item)
         const src = item.metadata.src
         fabric.loadSVGFromURL(src, (objects, opts) => {
@@ -195,9 +194,14 @@ class ObjectToFabric {
             baseOptions.height = opts.height
           }
 
-          objects.forEach(object => {
+          objects.forEach((object: any) => {
             baseOptions?.fill && object.set('fill', baseOptions?.fill)
             baseOptions?.stroke && object.set('stroke', baseOptions?.stroke)
+            if (object.type === 'text' && item?.metadata?.replaceTexts) {
+              Object.entries(item?.metadata?.replaceTexts || {}).forEach(([key, value]) => {
+                object.text = object.text.replaceAll(`${key}`, value)
+              })
+            }
           })
 
           const object = new fabric.StaticVector(objects, opts, { ...baseOptions, src })
@@ -236,6 +240,9 @@ class ObjectToFabric {
       hoverCursor,
       selectable = true,
       evented = true,
+      backgroundColor,
+      underline,
+      linethrough
     } = item
     let metadata = item.metadata ? item.metadata : {}
     const { fill } = metadata
@@ -266,6 +273,9 @@ class ObjectToFabric {
       hoverCursor,
       selectable,
       evented,
+      backgroundColor,
+      underline,
+      linethrough
     }
     return baseOptions
   }

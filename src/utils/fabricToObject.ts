@@ -211,7 +211,10 @@ class ExportObject {
       skewX,
       skewY,
       visible,
-      animation
+      animation,
+      backgroundColor,
+      underline,
+      linethrough
     } = item
     const baseOptions = {
       id,
@@ -234,7 +237,10 @@ class ExportObject {
       skewX,
       skewY,
       visible,
-      animation
+      animation,
+      backgroundColor,
+      underline,
+      linethrough
     }
     return baseOptions
   }

@@ -263,8 +263,8 @@ class ObjectToFabric {
             baseOptions?.fill && object.set('fill', baseOptions?.fill)
             baseOptions?.stroke && object.set('stroke', baseOptions?.stroke)
 
-            if (object.type === 'text' && item?.replaceTexts) {
-              Object.entries(item?.replaceTexts || {}).forEach(([key, value]) => {
+            if (object.type === 'text' && item?.metadata?.replaceTexts) {
+              Object.entries(item?.metadata?.replaceTexts || {}).forEach(([key, value]) => {
                 object.text = object.text.replaceAll(`${key}`, value)
               })
             }
@@ -320,7 +320,10 @@ class ObjectToFabric {
       locked = false,
       hoverCursor,
       selectable = true,
-      evented = true
+      evented = true,
+      backgroundColor,
+      underline,
+      linethrough
     } = item
     let metadata = item.metadata ? item.metadata : {}
     const { fill } = metadata
@@ -352,7 +355,10 @@ class ObjectToFabric {
       locked,
       hoverCursor,
       selectable,
-      evented
+      evented,
+      backgroundColor,
+      underline,
+      linethrough
     }
     return baseOptions
   }
