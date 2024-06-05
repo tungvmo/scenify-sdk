@@ -737,6 +737,9 @@ class ObjectHandler extends BaseHandler {
     group.type = ObjectType.GROUP
     group.id = uuid()
     this.canvas.renderAll()
+
+    this.canvas.setActiveObject(group)
+    this.context.setActiveObject(group)
     this.handlers.historyHandler.save('group')
   }
 
