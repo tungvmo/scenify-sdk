@@ -22,19 +22,23 @@ class FrameHandler extends BaseHandler {
       name: '',
       fill: '#ffffff',
       hoverCursor: 'default',
-      absolutePositioned: this.config.clipToFrame
+      absolutePositioned: this.config.clipToFrame,
+      top: 0,
+      left: 0
     })
     const background = new fabric.Background({
       width: 1280,
       height: 720,
       fill: '#ffffff',
       id: 'background',
-      name: ''
+      name: '',
+      top: 0,
+      left: 0
     })
     this.canvas.add(frame)
     this.canvas.add(background)
-    frame.center()
-    background.center()
+    // frame.center()
+    // background.center()
     const watchZoom = setInterval(() => {
       if (this.handlers.zoomHandler.zoomToFit && this.handlers.scrollbarHandler.updateScrollPosition) {
         this.handlers.zoomHandler.zoomToFit()
@@ -55,7 +59,7 @@ class FrameHandler extends BaseHandler {
       const { width, height } = options
       frame.set('width', width)
       frame.set('height', height)
-      frame.center()
+      // frame.center()
       this.handlers.backgroundHandler.setSize(options)
     }
     this.handlers.zoomHandler.zoomToFit()
@@ -68,7 +72,7 @@ class FrameHandler extends BaseHandler {
       frame.set(key as any, options[key])
     }
 
-    frame.center()
+    // frame.center()
     this.handlers.zoomHandler.zoomToFit()
   }
 

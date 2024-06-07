@@ -43,8 +43,9 @@ class ObjectHandler extends BaseHandler {
 
     canvas.add(object)
 
-    if (!(item.top && item.left)) {
-      object.center()
+    if (!(typeof item.top === 'number' && typeof item.left === 'number')) {
+      object.top = 0
+      object.left = 0
     } else {
       object.top = item.top
       object.left = item.left

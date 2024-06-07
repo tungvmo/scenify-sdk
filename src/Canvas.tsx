@@ -26,6 +26,7 @@ function Canvas({ config }: ICanvas) {
       width: clientWidth,
       preserveObjectStacking: true,
       fireRightClick: true
+      // viewportTransform: [1, 0, 0, 1, (clientWidth - 3508) / 2, (clientHeight - 2480) / 2]
     }) as FabricCanvas
 
     const editor = new Editor({

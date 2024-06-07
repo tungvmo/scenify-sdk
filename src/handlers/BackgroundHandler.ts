@@ -22,7 +22,7 @@ class BackgroundHandler extends BaseHandler {
       background.set(key as any, options[key])
     }
 
-    background.center()
+    // background.center()
   }
 
   public setSize = options => {
@@ -31,7 +31,7 @@ class BackgroundHandler extends BaseHandler {
       const { width, height } = options
       background.set('width', width)
       background.set('height', height)
-      background.center()
+      // background.center()
     }
   }
 

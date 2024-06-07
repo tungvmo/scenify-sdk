@@ -19,16 +19,42 @@ class ZoomHandler extends BaseHandler {
   }
 
   zoomToOne() {
+    const canvasWidth = this.canvas.width
+    const canvasHeight = this.canvas.height
+
+    const frameWidth = this.handlers.frameHandler.getOptions().width
+    const frameHeight = this.handlers.frameHandler.getOptions().height
+
     const center = this.canvas.getCenter()
-    this.canvas.setViewportTransform([1, 0, 0, 1, 0, 0])
+    this.canvas.setViewportTransform([
+      1,
+      0,
+      0,
+      1,
+      (canvasWidth - frameWidth) / 2,
+      (canvasHeight - frameHeight) / 2
+    ])
     this.zoomToPoint(new fabric.Point(center.left, center.top), 1)
     this.context.setZoomRatio(1)
   }
 
   zoomToFit() {
+    const canvasWidth = this.canvas.width
+    const canvasHeight = this.canvas.height
+
+    const frameWidth = this.handlers.frameHandler.getOptions().width
+    const frameHeight = this.handlers.frameHandler.getOptions().height
+
     const zoomFitRatio = this.handlers.frameHandler.getFitRatio()
     const center = this.canvas.getCenter()
-    this.canvas.setViewportTransform([1, 0, 0, 1, 0, 0])
+    this.canvas.setViewportTransform([
+      1,
+      0,
+      0,
+      1,
+      (canvasWidth - frameWidth) / 2,
+      (canvasHeight - frameHeight) / 2
+    ])
     this.zoomToPoint(new fabric.Point(center.left, center.top), zoomFitRatio)
     this.context.setZoomRatio(zoomFitRatio)
   }
