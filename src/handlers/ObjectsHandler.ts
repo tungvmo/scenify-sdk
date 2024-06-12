@@ -260,7 +260,7 @@ class ObjectHandler extends BaseHandler {
 
           callback([clone])
         },
-        ['keyValues', 'src', 'metadata']
+        ['keyValues', 'src', 'metadata', 'id']
       )
     }
   }
